@@ -1,6 +1,6 @@
-# My Portfolio
+# BeardKoda
 
-This is a list of Web Applications, Website and Mobile Apps I have built and developed.
+Hello, My name is Akinsuyi Joshua ([BeardKoda](https://twitter.com/BeardKoda)), I am a Software Developer and this is a list of Web Applications, Website and Mobile Apps I have built and developed.
 
 ## Projects
 - [School Mobile App](https://github.com/BeardKoda/Yct-Mobile-App) - built with React Native and Firebase - school project(completed)
@@ -13,5 +13,9 @@ This is a list of Web Applications, Website and Mobile Apps I have built and dev
 
 
 ## More Infomation
-For more Information You can mail at [akinsuyi.joshua84@gmail.com](mail:akinsuyi.joshua84@gmail.com)
+For more Information -
+- Mail : [akinsuyi.joshua84@gmail.com](mail:akinsuyi.joshua84@gmail.com)
+- Twitter : [BeardKoda](https://twitter.com/BeardKoda)
+- Github : [BeardKoda](https://github.com/BeardKoda) 
+- Linkedin : [Akinsuyi Joshua](https://www.linkedin.com/in/joshua-akinsuyi/)
 
