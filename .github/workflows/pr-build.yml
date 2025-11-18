@@ -1,0 +1,122 @@
+name: pr-build
+
+on:
+  pull_request:
+    types: [synchronize, labeled]
+
+env:
+  ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
+  AWS_KEY: ${{ secrets.AWS_KEY }}
+  AWS_SECRET: ${{ secrets.AWS_SECRET }}
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+  GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
+
+jobs:
+  auto-merge:
+    name: auto-merge
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set retry count and max retries
+      id: init
+      run: |
+        echo "RETRY_COUNT=0" >> $GITHUB_ENV
+        echo "MAX_RETRIES=30" >> $GITHUB_ENV  # Maximum number of retries
+
+    - name: Check if build workflow succeeded
+      uses: actions/github-script@v6
+      id: check_build
+      with:
+        script: |
+            const maxRetries = parseInt(process.env.MAX_RETRIES, 10);
+            let retryCount = parseInt(process.env.RETRY_COUNT, 10);
+
+            async function checkBuildStatus() {
+              const workflowRuns = await github.rest.actions.listWorkflowRunsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                branch: context.payload.pull_request.head.ref,
+                event: 'push',
+                per_page: 1
+              });
+
+              const buildRun = workflowRuns.data.workflow_runs.find(run => run.name === 'ci-build');
+              
+              if (!buildRun) {
+                core.setFailed('No build workflow found for this PR.');
+                return 'failure';
+              }
+              
+              if (buildRun.conclusion === 'success') {
+                console.log("Build succeeded!");
+                return 'success';
+              } else if (buildRun.conclusion === 'failure') {
+                console.log("Build failed!");
+                return 'failure';
+              } else {
+                console.log("Build is still in progress...");
+                return 'in_progress';
+              }
+            }
+
+            async function pollBuildStatus() {
+              while (retryCount < maxRetries) {
+                const buildStatus = await checkBuildStatus();
+                
+                if (buildStatus === 'success') {
+                  core.setOutput('build_status', 'success');
+                  return;
+                } else if (buildStatus === 'failure') {
+                  core.setFailed('The build workflow failed.');
+                  return;
+                } else {
+                  retryCount++;
+                  console.log(`Waiting for 1 minute before retrying... (Attempt ${retryCount}/${maxRetries})`);
+                  await new Promise(resolve => setTimeout(resolve, 60000)); // Wait for 1 minute
+                }
+              }
+              
+              core.setFailed('Max retries reached, build did not complete in time.');
+            }
+
+            await pollBuildStatus();
+ 
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    - name: Install GitHub CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install gh
+    
+    - name: Check PR Labels
+      id: check_pr_labels
+      run: |
+        LABELS=$(gh pr view ${{ env.GITHUB_PR_NUMBER }} --json labels --jq '.labels[].name')
+        echo "$LABELS" | grep -q "ready" || { echo "Waiting for PR to be 'ready' for merge"; exit 1; }
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Auto Approve PR (if necessary)
+      if: ${{ steps.check_pr_labels.outcome == 'success' }}
+      run: |
+        gh pr review ${{ env.GITHUB_PR_NUMBER }} --approve
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Check PR Approval
+      id: check_approval
+      run: |
+        APPROVAL_STATE=$(gh pr view ${{ env.GITHUB_PR_NUMBER }} --json reviews --jq '.reviews[-1].state')
+        if [ "$APPROVAL_STATE" != "APPROVED" ]; then
+          echo "PR is not approved."
+          exit 1
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Merge the Pull Request
+      if: ${{ steps.check_pr_labels.outcome == 'success' }}
+      run: |
+        gh pr merge ${{ env.GITHUB_PR_NUMBER  }} --merge --auto
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
