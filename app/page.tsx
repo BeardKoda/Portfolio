@@ -46,7 +46,7 @@ export default function Home() {
   }, [handleTabChange])
 
   return (
-    <div className="min-h-screen">
+    <div className="h-screen overflow-hidden !p-10">
       {sections[activeTab as keyof typeof sections]}
     </div>
   )

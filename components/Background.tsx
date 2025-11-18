@@ -1,144 +1,314 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import anime from 'animejs'
+import { gsap } from 'gsap'
+import * as THREE from 'three'
 
 export default function Background() {
-  const backgroundRef = useRef<HTMLDivElement>(null)
-  const particlesRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const sceneRef = useRef<THREE.Scene | null>(null)
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null)
+  const particlesRef = useRef<THREE.Points | null>(null)
+  const lineRef = useRef<THREE.Mesh | null>(null)
+  const animationFrameRef = useRef<number | null>(null)
 
   useEffect(() => {
-    if (!backgroundRef.current) return
+    if (!containerRef.current) return
 
-    // Create the grid pattern using CSS
-    const gridSize = 60
-    const lineColor = 'rgba(255, 255, 255, 0.08)'
-    
-    // Set the background pattern
-    backgroundRef.current.style.backgroundImage = `
-      linear-gradient(to right, ${lineColor} 1px, transparent 1px),
-      linear-gradient(to bottom, ${lineColor} 1px, transparent 1px)
-    `
-    backgroundRef.current.style.backgroundSize = `${gridSize}px ${gridSize}px`
-    backgroundRef.current.style.backgroundPosition = '0px 0px'
+    // Initialize Three.js scene
+    const scene = new THREE.Scene()
+    sceneRef.current = scene
 
-    // Animate the background position
-    const animTarget = { x: 0, y: 0 }
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    )
+    camera.position.z = 5
+    cameraRef.current = camera
 
-    anime({
-      targets: animTarget,
-      x: gridSize,
-      y: gridSize,
-      duration: 8000,
-      easing: 'linear',
-      loop: true,
-      update: () => {
-        if (backgroundRef.current) {
-          backgroundRef.current.style.backgroundPosition = `${animTarget.x}px ${animTarget.y}px`
-        }
-      },
+    const renderer = new THREE.WebGLRenderer({ 
+      alpha: true, 
+      antialias: true,
+      powerPreference: 'high-performance'
     })
-  }, [])
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setClearColor(0x000000, 0)
+    containerRef.current.appendChild(renderer.domElement)
+    rendererRef.current = renderer
 
-  useEffect(() => {
-    if (!particlesRef.current) return
+    // Create particle system
+    const particleCount = 20000
+    const positions = new Float32Array(particleCount * 3)
+    const colors = new Float32Array(particleCount * 3)
+    const sizes = new Float32Array(particleCount)
+    const velocities = new Float32Array(particleCount * 3)
 
-    // Create floating particles
-    const particleCount = 250
-    const particles: HTMLElement[] = []
-    
-    // Color palette matching the theme
-    const colors = [
-      'rgba(0, 122, 255, 0.2)',    // Blue accent
-      'rgba(0, 255, 136, 0.2)',    // Green highlight
-      'rgba(255, 255, 255, 0.15)', // White
-      'rgba(0, 122, 255, 0.15)',   // Lighter blue
-      'rgba(0, 255, 136, 0.15)',   // Lighter green
-      'rgba(255, 255, 255, 0.1)',  // Dimmer white
+    const colorPalette = [
+      new THREE.Color(0x007aff), // Blue accent
+      new THREE.Color(0x00ff88), // Green highlight
+      new THREE.Color(0xffffff), // White
     ]
 
     for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div')
-      particle.className = 'floating-particle'
+      const i3 = i * 3
       
-      // Random size between 2-4px
-      const size = Math.random() * 2 + 2
-      particle.style.width = `${size}px`
-      particle.style.height = `${size}px`
-      particle.style.borderRadius = '50%'
-      
+      // Random position
+      positions[i3] = (Math.random() - 0.5) * 20
+      positions[i3 + 1] = (Math.random() - 0.5) * 20
+      positions[i3 + 2] = (Math.random() - 0.5) * 20
+
       // Random color from palette
-      const color = colors[Math.floor(Math.random() * colors.length)]
-      particle.style.backgroundColor = color
-      particle.style.boxShadow = `0 0 ${size * 2}px ${color}`
-      
-      particle.style.position = 'absolute'
-      
-      // Random starting position
-      particle.style.left = `${Math.random() * 100}%`
-      particle.style.top = `${Math.random() * 100}%`
-      
-      particlesRef.current.appendChild(particle)
-      particles.push(particle)
+      const color = colorPalette[Math.floor(Math.random() * colorPalette.length)]
+      colors[i3] = color.r * (0.1 + Math.random() * 0.1)
+      colors[i3 + 1] = color.g * (0.1 + Math.random() * 0.1)
+      colors[i3 + 2] = color.b * (0.1 + Math.random() * 0.1)
+
+      // Random size
+      sizes[i] = Math.random() * 2 + 1
+
+      // Initialize all velocities to 0 - only one particle will move
+      velocities[i3] = 0
+      velocities[i3 + 1] = 0
+      velocities[i3 + 2] = 0
     }
 
-    // Animate each particle
-    particles.forEach((particle, index) => {
-      // Random movement distance (30-50% of viewport)
-      const moveX = (Math.random() - 0.5) * (window.innerWidth * 0.4)
-      const moveY = (Math.random() - 0.5) * (window.innerHeight * 0.4)
-      
-      // Random duration between 15-25 seconds
-      const duration = Math.random() * 10000 + 15000
-      
-      // Random delay to stagger animations
-      const delay = index * 150
+    const geometry = new THREE.BufferGeometry()
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
 
-      // Create smooth floating animation
-      anime({
-        targets: particle,
-        translateX: [0, moveX, -moveX, 0],
-        translateY: [0, moveY, -moveY, 0],
-        opacity: [0.1, 0.25, 0.25, 0.1],
-        scale: [0.9, 1.1, 1.1, 0.9],
-        duration: duration,
-        delay: delay,
-        easing: 'easeInOutSine',
-        loop: true,
-      })
+    const material = new THREE.PointsMaterial({
+      size: 0.15,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.8,
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: false,
     })
 
-    // Cleanup function
-    return () => {
-      particles.forEach((particle) => {
-        if (particle.parentNode) {
-          particle.parentNode.removeChild(particle)
-        }
+    const particles = new THREE.Points(geometry, material)
+    particles.userData.velocities = velocities
+    // Select one random particle to animate
+    particles.userData.activeParticleIndex = Math.floor(Math.random() * particleCount)
+    scene.add(particles)
+    particlesRef.current = particles
+
+    // Create animated line (glowing orb)
+    const lineGeometry = new THREE.SphereGeometry(0.05, 16, 16)
+    const lineMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00ff88,
+      transparent: true,
+      opacity: 0.8,
+    })
+    const line = new THREE.Mesh(lineGeometry, lineMaterial)
+    line.position.set(
+      (Math.random() - 0.5) * 10,
+      (Math.random() - 0.5) * 10,
+      0
+    )
+    scene.add(line)
+    lineRef.current = line
+
+    // Add glow effect to line
+    const glowGeometry = new THREE.SphereGeometry(0.15, 16, 16)
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00ff88,
+      transparent: true,
+      opacity: 0.3,
+    })
+    const glow = new THREE.Mesh(glowGeometry, glowMaterial)
+    line.add(glow)
+
+    // GSAP animation for line movement
+    const gridSize = 60
+    const getRandomGridPosition = () => {
+      const cols = Math.floor(window.innerWidth / gridSize)
+      const rows = Math.floor(window.innerHeight / gridSize)
+      const randomCol = Math.floor(Math.random() * cols)
+      const randomRow = Math.floor(Math.random() * rows)
+      return {
+        x: ((randomCol * gridSize) / window.innerWidth - 0.5) * 20,
+        y: ((randomRow * gridSize) / window.innerHeight - 0.5) * 20,
+      }
+    }
+
+    const animateLine = () => {
+      const targetPos = getRandomGridPosition()
+      const duration = Math.random() * 2 + 1
+
+      // Create trail
+      const trailGeometry = new THREE.SphereGeometry(0.03, 8, 8)
+      const trailMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00ff88,
+        transparent: true,
+        opacity: 0.4,
       })
+      const trail = new THREE.Mesh(trailGeometry, trailMaterial)
+      trail.position.copy(line.position)
+      scene.add(trail)
+
+      // Fade out trail
+      gsap.to(trail.material, {
+        opacity: 0,
+        duration: 3,
+        ease: 'power2.out',
+        onComplete: () => {
+          scene.remove(trail)
+          trail.geometry.dispose()
+          trail.material.dispose()
+        },
+      })
+
+      gsap.to(trail.scale, {
+        x: 2,
+        y: 2,
+        z: 2,
+        duration: 3,
+        ease: 'power2.out',
+      })
+
+      // Animate line to new position
+      gsap.to(line.position, {
+        x: targetPos.x,
+        y: targetPos.y,
+        duration: duration,
+        ease: 'power1.inOut',
+        onComplete: animateLine,
+      })
+
+      // Pulse animation
+      gsap.to(line.scale, {
+        x: 1.5,
+        y: 1.5,
+        z: 1.5,
+        duration: duration / 2,
+        yoyo: true,
+        repeat: 1,
+        ease: 'power1.inOut',
+      })
+    }
+
+    // Start line animation
+    setTimeout(() => {
+      animateLine()
+    }, 500)
+
+    // Animation loop - start immediately
+    let frameCount = 0
+    const animate = () => {
+      animationFrameRef.current = requestAnimationFrame(animate)
+      frameCount++
+
+      // Always update particles
+      if (particlesRef.current) {
+        const particles = particlesRef.current
+        particles.rotation.y += 0.0002
+        particles.rotation.x += 0.0001
+
+        // Update only one particle position with random movement
+        const positions = particles.geometry.attributes.position as THREE.BufferAttribute
+        const velocities = particles.userData.velocities as Float32Array
+        const activeIndex = particles.userData.activeParticleIndex as number
+
+        if (velocities && positions && activeIndex !== undefined) {
+          const posArray = positions.array as Float32Array
+          const i3 = activeIndex * 3
+          
+          // Randomly change velocity direction more frequently for immediate visible movement
+          if (frameCount % 30 === 0 || Math.random() < 0.02) {
+            velocities[i3] = (Math.random() - 0.5) * 0.05
+            velocities[i3 + 1] = (Math.random() - 0.5) * 0.05
+            velocities[i3 + 2] = (Math.random() - 0.5) * 0.05
+          }
+
+          // Add continuous random drift for organic movement
+          const drift = 0.005
+          velocities[i3] += (Math.random() - 0.5) * drift
+          velocities[i3 + 1] += (Math.random() - 0.5) * drift
+          velocities[i3 + 2] += (Math.random() - 0.5) * drift
+
+          // Clamp velocity to prevent particle from moving too fast
+          const maxSpeed = 0.06
+          velocities[i3] = Math.max(-maxSpeed, Math.min(maxSpeed, velocities[i3]))
+          velocities[i3 + 1] = Math.max(-maxSpeed, Math.min(maxSpeed, velocities[i3 + 1]))
+          velocities[i3 + 2] = Math.max(-maxSpeed, Math.min(maxSpeed, velocities[i3 + 2]))
+
+          // Update position immediately
+          posArray[i3] += velocities[i3]
+          posArray[i3 + 1] += velocities[i3 + 1]
+          posArray[i3 + 2] += velocities[i3 + 2]
+
+          // Wrap around boundaries with some randomness
+          if (Math.abs(posArray[i3]) > 10) {
+            posArray[i3] = (Math.random() - 0.5) * 20
+          }
+          if (Math.abs(posArray[i3 + 1]) > 10) {
+            posArray[i3 + 1] = (Math.random() - 0.5) * 20
+          }
+          if (Math.abs(posArray[i3 + 2]) > 10) {
+            posArray[i3 + 2] = (Math.random() - 0.5) * 20
+          }
+          
+          // Mark positions as needing update
+          positions.needsUpdate = true
+        }
+      }
+
+      // Always render
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera)
+      }
+    }
+
+    // Start animation immediately - no delay
+    animate()
+
+    // Handle window resize
+    const handleResize = () => {
+      if (!cameraRef.current || !rendererRef.current) return
+      
+      camera.aspect = window.innerWidth / window.innerHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+
+      if (containerRef.current && renderer.domElement) {
+        containerRef.current.removeChild(renderer.domElement)
+      }
+
+      // Dispose of Three.js resources
+      particles.geometry.dispose()
+      particles.material.dispose()
+      line.geometry.dispose()
+      line.material.dispose()
+      glow.geometry.dispose()
+      glow.material.dispose()
+      renderer.dispose()
     }
   }, [])
 
   return (
-    <>
-      {/* Grid Background */}
-      <div
-        ref={backgroundRef}
+    <div
+      ref={containerRef}
         className="fixed inset-0 -z-10 pointer-events-none"
         style={{
           width: '100vw',
           height: '100vh',
         }}
       />
-      {/* Floating Particles */}
-      <div
-        ref={particlesRef}
-        className="fixed inset-0 -z-10 pointer-events-none"
-        style={{
-          width: '100vw',
-          height: '100vh',
-        }}
-      />
-    </>
   )
 }
-

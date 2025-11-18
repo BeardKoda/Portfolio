@@ -45,23 +45,30 @@ export default function Timeline({ items }: TimelineProps) {
   }, [])
 
   return (
-    <div ref={timelineRef} className="relative">
-      <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-blue-accent/30" />
-      <div className="space-y-12">
+    <div ref={timelineRef} className="flex flex-col">
+      <div className="flex flex-col space-y-16 lg:space-y-20 gap-8 !px-6">
         {items.map((item, index) => (
-          <div key={index} className="relative timeline-node opacity-0">
-            <div className="absolute left-6 w-4 h-4 bg-blue-accent rounded-full border-4 border-charcoal" />
-            <div className="ml-20">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+          <div key={index} className="flex timeline-node opacity-0 !gap-6">
+            {/* Timeline line and dot container */}
+            <div className="flex flex-col items-center mr-8">
+              <div className="w-4 h-4 bg-blue-accent rounded-full border-4 border-charcoal flex-shrink-0" />
+              {/* {index < items.length - 1 && ( */}
+                <div className="w-0.5 bg-blue-accent/30 flex-1 min-h-[4rem] border-l border-blue-accent/30" />
+              {/* )} */}
+            </div>
+            
+            {/* Content */}
+            <div className="flex-1">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                 <h3 className="text-xl font-heading font-bold text-blue-accent">
                   {item.company}
                 </h3>
                 <span className="text-green-highlight font-code text-sm">{item.years}</span>
               </div>
-              <p className="text-lg font-body font-semibold text-white mb-3">{item.role}</p>
-              <ul className="space-y-2">
+              <p className="text-lg font-body font-semibold text-white mb-4">{item.role}</p>
+              <ul className="flex flex-col space-y-3">
                 {item.responsibilities.map((resp, i) => (
-                  <li key={i} className="text-white/70 font-body text-sm flex items-start">
+                  <li key={i} className="gap-2 text-white/70 font-body text-sm flex items-start">
                     <span className="text-green-highlight mr-2">▹</span>
                     {resp}
                   </li>

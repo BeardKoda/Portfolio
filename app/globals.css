@@ -8,8 +8,8 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-  overflow-y: auto;
+  overflow: hidden;
+  height: 100%;
 }
 
 body {
@@ -17,8 +17,49 @@ body {
   background-color: #0D0D0D;
   color: #F5F5F5;
   line-height: 1.6;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
+  height: 100%;
+  cursor: none;
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #00FF88;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 255, 136, 0.3);
+  will-change: transform;
+}
+
+.custom-cursor::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: #00FF88;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+}
+
+.custom-cursor.hover {
+  width: 40px;
+  height: 40px;
+  border-color: #007AFF;
+  box-shadow: 0 0 15px rgba(0, 122, 255, 0.5), 0 0 30px rgba(0, 122, 255, 0.3);
+}
+
+.custom-cursor.hover::before {
+  background: #007AFF;
+  box-shadow: 0 0 12px rgba(0, 122, 255, 0.8);
 }
 
 /* Ensure text doesn't get cut off */

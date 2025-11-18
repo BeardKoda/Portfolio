@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Background from '@/components/Background'
+import CustomCursor from '@/components/CustomCursor'
 import LoadingWrapper from '@/components/LoadingWrapper'
 
 export const metadata: Metadata = {
@@ -30,6 +31,7 @@ export default function RootLayout({
       </head>
       <body>
         <LoadingWrapper>
+          <CustomCursor />
           <Background />
           <Navbar />
           <main>{children}</main>

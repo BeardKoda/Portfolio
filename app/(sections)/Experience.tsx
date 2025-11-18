@@ -2,6 +2,7 @@
 
 import Timeline from '@/components/Timeline'
 import SectionCover from '@/components/SectionCover'
+import NavigationButton from '@/components/NavigationButton'
 
 const experience = [
   {
@@ -34,22 +35,78 @@ const experience = [
       'Collaborated with frontend team on API design',
     ],
   },
+  {
+    company: 'StartupXY',
+    role: 'Backend Developer',
+    years: '2018 - 2020',
+    responsibilities: [
+      'Developed scalable backend services handling 100K+ requests/day',
+      'Designed and implemented database schemas',
+      'Collaborated with frontend team on API design',
+    ],
+  },
+  {
+    company: 'StartupXZ',
+    role: 'Backend Developer',
+    years: '2018 - 2020',
+    responsibilities: [
+      'Developed scalable backend services handling 100K+ requests/day',
+      'Designed and implemented database schemas',
+      'Collaborated with frontend team on API design',
+    ],
+  },
+  {
+    company: 'StartupYZ',
+    role: 'Backend Developer',
+    years: '2018 - 2020',
+    responsibilities: [
+      'Developed scalable backend services handling 100K+ requests/day',
+      'Designed and implemented database schemas',
+      'Collaborated with frontend team on API design',
+    ],
+  },
+  {
+    company: 'StartupYZ',
+    role: 'Backend Developer',
+    years: '2018 - 2020',
+    responsibilities: [
+      'Developed scalable backend services handling 100K+ requests/day',
+      'Designed and implemented database schemas',
+      'Collaborated with frontend team on API design',
+    ],
+  },
 ]
 
 export default function Experience() {
+  const navigateToProjects = () => {
+    const handleTabChange = (window as any).handleTabChange
+    if (handleTabChange) {
+      handleTabChange('projects')
+    }
+  }
+
   return (
-    <SectionCover id="experience" className="min-h-screen">
+    <SectionCover id="experience" className="min-h-screen overflow-hidden py-20">
       <section
-        className="min-h-screen py-20 px-6"
+        className="min-h-screen flex flex-col items-center px-6 pt-20 pb-20 h-screen"
       >
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-16">
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-4 relative inline-block">
+      <div className="flex flex-col max-w-6xl mx-auto w-full h-full">
+        <div className="flex flex-col mb-4 text-center lg:text-left !py-6 flex-shrink-0">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-4 relative inline-block">
             Experience
             <span className="absolute bottom-0 left-0 w-0 h-1 bg-blue-accent animate-[underline_1s_ease-out_forwards]" />
           </h2>
         </div>
-        <Timeline items={experience} />
+        <div className="w-full overflow-y-auto py-6 flex-1 max-h-[calc(100vh-250px)]">
+          <Timeline items={experience} />
+        </div>
+        <div className="flex items-center justify-start mt-8 gap-4 flex-shrink-0">
+          <NavigationButton
+            onClick={navigateToProjects}
+            direction="backward"
+            delay={1000}
+          />
+        </div>
       </div>
     </section>
     </SectionCover>
