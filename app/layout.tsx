@@ -6,12 +6,12 @@ import CustomCursor from '@/components/CustomCursor'
 import LoadingWrapper from '@/components/LoadingWrapper'
 
 export const metadata: Metadata = {
-  title: 'Beardkoda — Senior DevOps & Software Engineer',
+  title: 'Beardkoda — DevOps & System Architect',
   description: 'Engineering clean systems with precision. DevOps, Backend, Cloud Architect.',
   keywords: ['DevOps', 'Software Engineering', 'Cloud Architecture', 'Backend Development'],
   authors: [{ name: 'Beardkoda' }],
   openGraph: {
-    title: 'Beardkoda — Senior DevOps & Software Engineer',
+    title: 'Beardkoda — DevOps & System Architect',
     description: 'Engineering clean systems with precision.',
     type: 'website',
   },
