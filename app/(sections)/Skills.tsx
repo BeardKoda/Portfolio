@@ -72,10 +72,10 @@ export default function Skills() {
   }, [])
 
   return (
-    <SectionCover id="skills" className="min-h-screen">
+    <SectionCover id="skills">
       <section
         ref={sectionRef}
-        className="min-h-screen flex flex-col items-center justify-center px-6 pt-20"
+        className="flex flex-col items-center justify-center px-6 pt-20"
       >
       <div className="flex flex-col max-w-6xl mx-auto w-full gap-6">
         <div className="mb-4 text-center lg:text-left">

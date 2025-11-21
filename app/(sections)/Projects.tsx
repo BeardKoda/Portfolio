@@ -2,72 +2,14 @@
 
 import ProjectCard from '@/components/ProjectCard'
 import SectionCover from '@/components/SectionCover'
-
-const projects = [
-  {
-    title: 'Cloud Infrastructure Platform',
-    description: 'Scalable multi-cloud infrastructure management platform with automated provisioning and monitoring.',
-    techStack: ['AWS', 'Terraform', 'Kubernetes', 'Python'],
-    githubUrl: 'https://github.com',
-    demoUrl: 'https://demo.example.com',
-  },
-  {
-    title: 'CI/CD Pipeline Automation',
-    description: 'Enterprise-grade CI/CD pipeline with automated testing, deployment, and rollback capabilities.',
-    techStack: ['Jenkins', 'Docker', 'Git', 'Bash'],
-    githubUrl: 'https://github.com',
-    demoUrl: 'https://demo.example.com',
-  },
-  {
-    title: 'Microservices Architecture',
-    description: 'Containerized microservices application with service mesh and distributed tracing.',
-    techStack: ['Kubernetes', 'Docker', 'Node.js', 'PostgreSQL'],
-    githubUrl: 'https://github.com',
-    demoUrl: 'https://demo.example.com',
-  },
-  {
-    title: 'DevOps Dashboard',
-    description: 'Real-time monitoring and analytics dashboard for infrastructure and application metrics.',
-    techStack: ['React', 'TypeScript', 'Node.js', 'MongoDB'],
-    githubUrl: 'https://github.com',
-    demoUrl: 'https://demo.example.com',
-  },
-  {
-    title: 'Infrastructure as Code',
-    description: 'Comprehensive IaC solution for managing cloud resources across multiple environments.',
-    techStack: ['Terraform', 'Ansible', 'AWS', 'Python'],
-    githubUrl: 'https://github.com',
-    demoUrl: 'https://demo.example.com',
-  },
-  {
-    title: 'Container Orchestration',
-    description: 'Advanced container orchestration system with auto-scaling and load balancing.',
-    techStack: ['Kubernetes', 'Docker', 'Helm', 'Prometheus'],
-    githubUrl: 'https://github.com',
-    demoUrl: 'https://demo.example.com',
-  },
-  {
-    title: 'Container Orchestration',
-    description: 'Advanced container orchestration system with auto-scaling and load balancing.',
-    techStack: ['Kubernetes', 'Docker', 'Helm', 'Prometheus'],
-    githubUrl: 'https://github.com',
-    demoUrl: 'https://demo.example.com',
-  },
-  {
-    title: 'Container Orchestration',
-    description: 'Advanced container orchestration system with auto-scaling and load balancing.',
-    techStack: ['Kubernetes', 'Docker', 'Helm', 'Prometheus'],
-    githubUrl: 'https://github.com',
-    demoUrl: 'https://demo.example.com',
-  },
-]
+import projects from '@/data/projects'
 
 export default function Projects() {
 
   return (
-    <SectionCover id="projects" className="min-h-screen">
+    <SectionCover id="projects" className="flex h-[80vh] relative justify-center items-center !my-auto">
       <section
-        className="min-h-screen flex flex-col items-center justify-center px-6 pt-20"
+        className="flex flex-col items-center justify-center px-6 pt-20"
       >
       <div className="flex flex-col max-w-6xl mx-auto w-full gap-6">
         <div className="mb-4 text-center lg:text-left">
@@ -81,7 +23,7 @@ export default function Projects() {
             Projects we've worked on range from cloud infrastructure to AI automation—each built clean, efficient, and built to last.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 w-full">
           {projects.map((project, index) => (
             <ProjectCard
               key={index}
@@ -90,6 +32,7 @@ export default function Projects() {
               techStack={project.techStack}
               githubUrl={project.githubUrl}
               demoUrl={project.demoUrl}
+              imageUrl={project.imageUrl}
               index={index}
             />
           ))}

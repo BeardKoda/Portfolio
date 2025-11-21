@@ -179,9 +179,9 @@ export default function Home() {
   }, [handleTabChange])
 
   return (
-    <div className="h-full !p-20">
+    <div className="!p-20">
       <Hero />
-      <Skills />
+      {/* <Skills /> */}
       <Projects />
       <Experience />
     </div>

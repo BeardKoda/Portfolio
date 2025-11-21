@@ -15,14 +15,7 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({
-  title,
-  description,
-  techStack,
-  githubUrl,
-  demoUrl,
-  imageUrl,
-  index,
-}: ProjectCardProps) {
+  title, description, techStack, githubUrl, demoUrl, imageUrl, index }: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -74,7 +67,7 @@ export default function ProjectCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Preview Image/Visual */}
-      <div className="relative w-full h-76 overflow-hidden">
+      <div className="relative w-full h-76 aspect-video overflow-hidden">
         {imageUrl ? (
           <Image
             src={imageUrl}

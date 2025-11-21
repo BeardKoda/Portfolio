@@ -65,7 +65,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <SectionCover id="hero" className="h-full relative">
+    <SectionCover id="hero" className="flex h-[80vh] relative justify-center items-center !my-auto">
       <AnimatedBorder sectionId="hero" nextSectionId="skills" />
       <section className=" flex flex-col items-center justify-center px-6 pt-20 my-auto h-full">
         <div ref={contentContainerRef} className="max-w-6xl mx-auto w-full relative">
