@@ -24,7 +24,7 @@ export default function LoadingWrapper({
         <PageLoader onComplete={handleLoaderComplete} />
       ) : (
         <div
-          className="page-content"
+          className="page-content h-full"
           style={{
             opacity: isLoading ? 0 : 1,
             pointerEvents: isLoading ? "none" : "auto",

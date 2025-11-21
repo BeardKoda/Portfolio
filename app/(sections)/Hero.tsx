@@ -5,13 +5,15 @@ import anime from "animejs";
 import Image from "next/image";
 import TypewriterText from "@/components/TypewriterText";
 import SectionCover from "@/components/SectionCover";
-import NavigationButton from "@/components/NavigationButton";
+import AnimatedBorder from "@/components/AnimatedBorder";
+import ContentAnimatedBorder from "@/components/ContentAnimatedBorder";
 import { socialLinks } from "@/data/herodata";
 
 export default function Hero() {
   const profileImageRef = useRef<HTMLDivElement>(null);
   const borderRef = useRef<HTMLDivElement>(null);
   const greetingRef = useRef<HTMLDivElement>(null);
+  const contentContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (profileImageRef.current) {
@@ -62,17 +64,12 @@ export default function Hero() {
     }
   }, []);
 
-  const scrollToSkills = () => {
-    const handleTabChange = (window as any).handleTabChange;
-    if (handleTabChange) {
-      handleTabChange("skills");
-    }
-  };
-
   return (
-    <SectionCover id="hero" className="min-h-screen">
-      <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-20">
-        <div className="max-w-6xl mx-auto w-full">
+    <SectionCover id="hero" className="h-full relative">
+      <AnimatedBorder sectionId="hero" nextSectionId="skills" />
+      <section className=" flex flex-col items-center justify-center px-6 pt-20 my-auto h-full">
+        <div ref={contentContainerRef} className="max-w-6xl mx-auto w-full relative">
+          {/* <ContentAnimatedBorder containerRef={contentContainerRef} nextSectionId="skills" /> */}
           <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-16">
             {/* First Section: Profile Image with Social Icons */}
             <div className="flex flex-col items-center gap-8 w-full lg:w-1/3">
@@ -156,13 +153,6 @@ Whether it's distributed systems, AI-powered apps, or a new beat, I enjoy taking
                   delay={1800}
                   speed={5}
                 />
-                <div className="self-start mt-6">
-                  <NavigationButton
-                    onClick={scrollToSkills}
-                    direction="forward"
-                    delay={11000}
-                  />
-                </div>
               </div>
             </div>
           </div>

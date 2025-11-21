@@ -2,7 +2,6 @@
 
 import ProjectCard from '@/components/ProjectCard'
 import SectionCover from '@/components/SectionCover'
-import NavigationButton from '@/components/NavigationButton'
 
 const projects = [
   {
@@ -64,19 +63,6 @@ const projects = [
 ]
 
 export default function Projects() {
-  const navigateToSkills = () => {
-    const handleTabChange = (window as any).handleTabChange
-    if (handleTabChange) {
-      handleTabChange('skills')
-    }
-  }
-
-  const navigateToExperience = () => {
-    const handleTabChange = (window as any).handleTabChange
-    if (handleTabChange) {
-      handleTabChange('experience')
-    }
-  }
 
   return (
     <SectionCover id="projects" className="min-h-screen">
@@ -107,19 +93,6 @@ export default function Projects() {
               index={index}
             />
           ))}
-        </div>
-        <div className="flex items-center justify-between mt-8 gap-4">
-          <NavigationButton
-            onClick={navigateToSkills}
-            direction="backward"
-            delay={1000}
-          />
-          <NavigationButton
-            onClick={navigateToExperience}
-            direction="forward"
-            delay={1000}
-            className="ml-auto"
-          />
         </div>
       </div>
     </section>

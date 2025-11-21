@@ -34,7 +34,7 @@ export default function RootLayout({
           <CustomCursor />
           <Background />
           <Navbar />
-          <main>{children}</main>
+          {children}
         </LoadingWrapper>
       </body>
     </html>

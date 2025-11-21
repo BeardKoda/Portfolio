@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react'
 import anime from 'animejs'
 import TypewriterText from '@/components/TypewriterText'
 import SectionCover from '@/components/SectionCover'
-import NavigationButton from '@/components/NavigationButton'
 
 const skills = [
   { name: 'Docker', icon: '🐳' },
@@ -31,20 +30,6 @@ const skills = [
 export default function Skills() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const skillsGridRef = useRef<HTMLDivElement>(null)
-
-  const navigateToHero = () => {
-    const handleTabChange = (window as any).handleTabChange
-    if (handleTabChange) {
-      handleTabChange('hero')
-    }
-  }
-
-  const navigateToProjects = () => {
-    const handleTabChange = (window as any).handleTabChange
-    if (handleTabChange) {
-      handleTabChange('projects')
-    }
-  }
 
   useEffect(() => {
     if (!sectionRef.current || !skillsGridRef.current) return
@@ -120,19 +105,6 @@ export default function Skills() {
               <div className="text-white font-body font-semibold">{skill.name}</div>
             </div>
           ))}
-        </div>
-        <div className="flex items-center justify-between mt-8 gap-4">
-          <NavigationButton
-            onClick={navigateToHero}
-            direction="backward"
-            delay={3000}
-          />
-          <NavigationButton
-            onClick={navigateToProjects}
-            direction="forward"
-            delay={3000}
-            className="ml-auto"
-          />
         </div>
       </div>
     </section>

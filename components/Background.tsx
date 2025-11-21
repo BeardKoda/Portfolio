@@ -12,6 +12,8 @@ export default function Background() {
   const particlesRef = useRef<THREE.Points | null>(null)
   const lineRef = useRef<THREE.Mesh | null>(null)
   const animationFrameRef = useRef<number | null>(null)
+  const scrollYRef = useRef(0)
+  const targetScrollYRef = useRef(0)
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -197,11 +199,59 @@ export default function Background() {
       animateLine()
     }, 500)
 
+    // Parallax scroll handler
+    const handleScroll = () => {
+      targetScrollYRef.current = window.scrollY || window.pageYOffset
+    }
+
+    // Smooth parallax update
+    const updateParallax = () => {
+      // Smooth interpolation for parallax effect (easing for smoother movement)
+      const scrollDelta = targetScrollYRef.current - scrollYRef.current
+      scrollYRef.current += scrollDelta * 0.08
+
+      if (cameraRef.current) {
+        // Parallax effect: camera moves slightly based on scroll
+        const parallaxIntensity = 0.8
+        const normalizedScroll = scrollYRef.current / (window.innerHeight || 1)
+        cameraRef.current.position.y = 5 + normalizedScroll * parallaxIntensity * 2
+        // Subtle rotation based on scroll
+        cameraRef.current.rotation.z = normalizedScroll * 0.05
+      }
+
+      if (particlesRef.current) {
+        // Parallax effect: particles move at different speed (slower)
+        const particlesParallax = 0.4
+        const normalizedScroll = scrollYRef.current / (window.innerHeight || 1)
+        particlesRef.current.position.y = normalizedScroll * particlesParallax * 2
+        // Add rotation parallax
+        particlesRef.current.rotation.z = normalizedScroll * 0.1
+      }
+
+      if (lineRef.current) {
+        // Parallax effect: line moves at different speed (faster)
+        const lineParallax = 1.2
+        const baseY = lineRef.current.userData.baseY || 0
+        const normalizedScroll = scrollYRef.current / (window.innerHeight || 1)
+        lineRef.current.position.y = baseY + normalizedScroll * lineParallax * 2
+        // Add subtle rotation
+        lineRef.current.rotation.z = normalizedScroll * 0.15
+      }
+    }
+
+    // Store base Y position for line
+    if (lineRef.current) {
+      lineRef.current.userData.baseY = line.position.y
+    }
+
     // Animation loop - start immediately
     let frameCount = 0
     const animate = () => {
       animationFrameRef.current = requestAnimationFrame(animate)
       frameCount++
+
+      // Update parallax effect
+      updateParallax()
 
       // Always update particles
       if (particlesRef.current) {
@@ -267,6 +317,11 @@ export default function Background() {
     // Start animation immediately - no delay
     animate()
 
+    // Add scroll event listener
+    handleScroll() // Initialize scroll position
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('wheel', handleScroll, { passive: true })
+
     // Handle window resize
     const handleResize = () => {
       if (!cameraRef.current || !rendererRef.current) return
@@ -281,6 +336,8 @@ export default function Background() {
     // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize)
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('wheel', handleScroll)
       
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
