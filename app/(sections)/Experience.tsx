@@ -5,8 +5,8 @@ import SectionCover from '@/components/SectionCover'
 
 const experience = [
   {
-    company: 'Tech Corp',
-    role: 'Senior DevOps Engineer',
+    company: 'Tender Trade',
+    role: 'Co-Founder & CTO',
     years: '2022 - Present',
     responsibilities: [
       'Led infrastructure automation initiatives reducing deployment time by 60%',
@@ -15,9 +15,9 @@ const experience = [
     ],
   },
   {
-    company: 'Cloud Solutions Inc',
-    role: 'DevOps Engineer',
-    years: '2020 - 2022',
+    company: 'Pakt World',
+    role: 'System Architect',
+    years: '2022 - 2025',
     responsibilities: [
       'Built CI/CD pipelines for 20+ microservices',
       'Implemented container orchestration with Kubernetes',
@@ -25,9 +25,22 @@ const experience = [
     ],
   },
   {
-    company: 'StartupXYZ',
-    role: 'Backend Developer',
-    years: '2018 - 2020',
+    company: 'Protocoh',
+    role: 'Software Engineer | Cloud & DevOps Engineer',
+    years: '2021 - 2022',
+    responsibilities: [
+      'Built scalable backend services handling 100K+ requests/day',
+      'Designed and implemented database schemas',
+      'Collaborated with frontend team on API design and architecture',
+      'Built scalable backend services handling 100K+ requests/day',
+      'Designed and implemented database schemas',
+      'Collaborated with frontend team on API design and architecture',
+    ],
+  },
+  {
+    company: 'LendSqr',
+    role: 'Software Engineer',
+    years: '2020 - 2021',
     responsibilities: [
       'Developed scalable backend services handling 100K+ requests/day',
       'Designed and implemented database schemas',
@@ -35,43 +48,13 @@ const experience = [
     ],
   },
   {
-    company: 'StartupXY',
-    role: 'Backend Developer',
-    years: '2018 - 2020',
+    company: 'Bitmama',
+    role: 'Software Engineer',
+    years: '2020',
     responsibilities: [
       'Developed scalable backend services handling 100K+ requests/day',
       'Designed and implemented database schemas',
-      'Collaborated with frontend team on API design',
-    ],
-  },
-  {
-    company: 'StartupXZ',
-    role: 'Backend Developer',
-    years: '2018 - 2020',
-    responsibilities: [
-      'Developed scalable backend services handling 100K+ requests/day',
-      'Designed and implemented database schemas',
-      'Collaborated with frontend team on API design',
-    ],
-  },
-  {
-    company: 'StartupYZ',
-    role: 'Backend Developer',
-    years: '2018 - 2020',
-    responsibilities: [
-      'Developed scalable backend services handling 100K+ requests/day',
-      'Designed and implemented database schemas',
-      'Collaborated with frontend team on API design',
-    ],
-  },
-  {
-    company: 'StartupYZ',
-    role: 'Backend Developer',
-    years: '2018 - 2020',
-    responsibilities: [
-      'Developed scalable backend services handling 100K+ requests/day',
-      'Designed and implemented database schemas',
-      'Collaborated with frontend team on API design',
+      'Collaborated with frontend team on API design and architecture',
     ],
   },
 ]
