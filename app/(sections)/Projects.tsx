@@ -20,7 +20,7 @@ export default function Projects() {
         </div>
         <div className="text-lg md:text-xl font-body text-white/70 leading-relaxed mb-6">
           <p>
-            Projects we've worked on range from cloud infrastructure to AI automation—each built clean, efficient, and built to last.
+            Projects I've worked on, ranging from cloud infrastructure to AI automation, each cleanly and efficiently built.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 w-full">
