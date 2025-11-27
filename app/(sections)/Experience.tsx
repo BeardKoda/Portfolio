@@ -6,12 +6,12 @@ import SectionCover from '@/components/SectionCover'
 const experience = [
   {
     company: 'Tender Trade',
-    role: 'Co-Founder & CTO',
+    role: 'Co-Founder & System Architect',
     years: '2022 - Present',
     responsibilities: [
-      'Led infrastructure automation initiatives reducing deployment time by 60%',
-      'Architected multi-cloud solutions serving 1M+ users',
-      'Mentored team of 5 engineers on best practices',
+      'Built scalable backend services handling 100K+ requests/day',
+      'Designed and implemented database schemas',
+      'Collaborated with frontend team on API design and architecture',
     ],
   },
   {
