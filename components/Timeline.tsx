@@ -46,9 +46,9 @@ export default function Timeline({ items }: TimelineProps) {
 
   return (
     <div ref={timelineRef} className="flex flex-col">
-      <div className="flex flex-col space-y-16 lg:space-y-20 gap-8 !px-6">
+      <div className="flex flex-col space-y-16 lg:space-y-20 gap-2 !px-6">
         {items.map((item, index) => (
-          <div key={index} className="flex timeline-node opacity-0 !gap-6">
+          <div key={index} className="flex timeline-node opacity-0 !gap-1">
             {/* Timeline line and dot container */}
             <div className="flex flex-col items-center mr-8">
               <div className="w-4 h-4 bg-blue-accent rounded-full border-4 border-charcoal flex-shrink-0" />
