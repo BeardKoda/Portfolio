@@ -62,9 +62,9 @@ const experience = [
 export default function Experience() {
 
   return (
-    <SectionCover id="experience" className="min-h-screen py-20">
+    <SectionCover id="experience" className="w-full min-h-screen">
       <section
-        className="min-h-screen flex flex-col items-center px-6 pt-20 pb-20"
+        className="flex flex-col items-center px-6 pt-12 sm:pt-16 md:pt-20 pb-12 sm:pb-16 md:pb-20"
       >
       <div className="flex flex-col max-w-6xl mx-auto w-full">
         <div className="flex flex-col mb-4 text-center lg:text-left !py-6">

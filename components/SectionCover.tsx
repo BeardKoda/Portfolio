@@ -14,7 +14,7 @@ export default function SectionCover({
   return (
     <div 
       id={id} 
-      className={`relative scroll-snap-align-start ${className}`}
+      className={`relative scroll-snap-align-start w-full ${className}`}
       style={{
         scrollSnapAlign: 'start',
         scrollSnapStop: 'always',

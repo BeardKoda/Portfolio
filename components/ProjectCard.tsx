@@ -62,7 +62,7 @@ export default function ProjectCard({
   return (
     <div
       ref={cardRef}
-      className="glass rounded-lg overflow-hidden hover:border-blue-accent/50 transition-all duration-300 opacity-0 group cursor-pointer p-8"
+      className="glass rounded-lg overflow-hidden hover:border-blue-accent/50 transition-all duration-300 opacity-0 group cursor-pointer p-0"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

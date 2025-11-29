@@ -65,15 +65,15 @@ export default function Hero() {
   }, []);
 
   return (
-    <SectionCover id="hero" className="flex h-[80vh] relative justify-center items-center !my-auto">
+    <SectionCover id="hero" className="flex min-h-[80vh] md:min-h-[80vh] relative justify-center items-start md:items-center overflow-visible w-full">
       <AnimatedBorder sectionId="hero" nextSectionId="skills" />
-      <section className=" flex flex-col items-center justify-center px-6 pt-20 my-auto h-full">
+      <section className="flex flex-col items-center justify-center px-4 sm:px-6 pt-12 sm:pt-16 md:pt-20 my-auto w-full py-8 sm:py-12 md:py-0">
         <div ref={contentContainerRef} className="max-w-6xl mx-auto w-full relative">
           {/* <ContentAnimatedBorder containerRef={contentContainerRef} nextSectionId="skills" /> */}
           <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-16">
             {/* First Section: Profile Image with Social Icons */}
-            <div className="flex flex-col items-center gap-8 w-full lg:w-1/3">
-              <div className="relative w-64 h-64">
+            <div className="flex flex-col items-center gap-6 sm:gap-8 w-full lg:w-1/3">
+              <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64">
                 {/* Rotating Border */}
                 <div
                   ref={borderRef}
@@ -98,13 +98,15 @@ export default function Hero() {
                       alt="Profile"
                       width={256}
                       height={256}
+                      className="w-full h-full object-cover"
+                      sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, 256px"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Social Icons */}
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-3 sm:gap-4">
                 {socialLinks.map(
                   ({ name, url, icon: IconComponent }, index) => (
                     <a
@@ -112,7 +114,7 @@ export default function Hero() {
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group p-4 rounded-full hover:bg-green-600/20 hover:border-green-600/50 transition-all duration-300 hover:scale-250"
+                      className="group p-1 rounded-full hover:bg-green-600/20 hover:border-green-600/50 transition-all duration-300 hover:scale-250"
                       aria-label={name}
                       style={{
                         animationDelay: `${index * 100}ms`,
@@ -128,10 +130,10 @@ export default function Hero() {
             </div>
 
             {/* Second Section: Welcome Message */}
-            <div className="flex flex-col justify-center w-full lg:w-2/3 text-center lg:text-left gap-4">
+            <div className="flex flex-col justify-center w-full lg:w-2/3 text-center lg:text-left gap-3 sm:gap-4">
               <div
                 ref={greetingRef}
-                className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight opacity-0"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight opacity-0"
               >
                 <TypewriterText
                   text="Hi 👋, I'm Beardkoda."
@@ -142,14 +144,14 @@ export default function Hero() {
                   highlightColor="text-green-600"
                 />
               </div>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3 sm:gap-4">
                 <TypewriterText
                   text={`I'm a DevOps Engineer and System Architect with a deep passion for building scalable, secure, and high-performance infrastructure. I specialize in cloud architecture, container orchestration, CI/CD automation, AI integrations, and designing production-ready RAG systems that connect real-time data to intelligent workflows. My focus is always the same: systems that are fast, stable, and ready for real-world pressure.
 
 Beyond engineering, I'm a hands-on maker — I love fixing things, working with tools, and building small mechanical projects. I'm also fueled by creativity: I produce music, create remixes, and enjoy exploring sound design whenever I get the chance.
 
 Whether it's distributed systems, AI-powered apps, or a new beat, I enjoy taking ideas from zero to fully working — fast, clean, and elegant.`}
-                  className="text-lg md:text-xl font-body text-white/70 leading-relaxed whitespace-pre-line"
+                  className="text-base sm:text-lg md:text-xl font-body text-white/70 leading-relaxed whitespace-pre-line"
                   delay={1800}
                   speed={5}
                 />
