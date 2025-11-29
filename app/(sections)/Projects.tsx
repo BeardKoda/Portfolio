@@ -5,11 +5,10 @@ import SectionCover from '@/components/SectionCover'
 import projects from '@/data/projects'
 
 export default function Projects() {
-
   return (
-    <SectionCover id="projects" className="flex h-[80vh] relative justify-center items-center !my-auto">
+    <SectionCover id="projects" className="flex min-h-screen md:min-h-[80vh] relative justify-center items-start md:items-center w-full py-8 md:py-0">
       <section
-        className="flex flex-col items-center justify-center px-6 pt-20"
+        className="flex flex-col items-center justify-center px-4 sm:px-6 pt-12 sm:pt-16 md:pt-20 pb-12 sm:pb-16 md:pb-20 w-full"
       >
       <div className="flex flex-col max-w-6xl mx-auto w-full gap-6">
         <div className="mb-4 text-center lg:text-left">
